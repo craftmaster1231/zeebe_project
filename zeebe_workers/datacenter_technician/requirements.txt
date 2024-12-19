@@ -1,2 +1,0 @@
-pyzeebe==4.2.0
-grpcio==1.68.1
