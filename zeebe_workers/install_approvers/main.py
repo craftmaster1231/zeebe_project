@@ -23,7 +23,7 @@ async def main():
         return {"message": "Task 'Approve Equipment Install' completed successfully"}
 
     # Start the worker
-    print("Starting Equipment Requestor worker...")
+    print("Starting Install Approvers worker...")
     await worker.work()
 
 if __name__ == "__main__":

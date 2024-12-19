@@ -16,13 +16,15 @@ async def main():
     # Create Zeebe worker
     worker = ZeebeWorker(grpc_channel)
 
+
     @worker.task(task_type="ProvisioningPower_HT")
     async def provision_power_handler():
         print("Received a job: Provision Power For Equipment Install")
         return {"message": "Task 'Provision Power For Equipment Install' completed successfully"}
 
+
     # Start the worker
-    print("Starting Equipment Requestor worker...")
+    print("Starting Power Technician worker...")
     await worker.work()
 
 if __name__ == "__main__":

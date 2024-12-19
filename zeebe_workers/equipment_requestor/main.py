@@ -20,6 +20,7 @@ async def main():
     async def initiate_equipment_install_handler():
         print("Received a job: Initiate Equipment Install")
         return {"message": "Task 'Initiate Equipment Install' completed successfully"}
+
     # Start the worker
     print("Starting Equipment Requestor worker...")
     await worker.work()

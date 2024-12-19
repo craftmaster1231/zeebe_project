@@ -20,10 +20,10 @@ async def main():
     @worker.task(task_type="ProvisioningNetwork_HT")
     async def provision_network_handler():
         print("Received a job: Provision Network For Equipment Install")
-        return {"message": "Task 'Provision Network For Equipment Install' completed successfully"}
+
 
     # Start the worker
-    print("Starting Equipment Requestor worker...")
+    print("Starting Network Provisioner worker...")
     await worker.work()
 
 if __name__ == "__main__":
