@@ -17,14 +17,13 @@ async def main():
     worker = ZeebeWorker(grpc_channel)
 
     # Define a job handler
-    @worker.task(task_type="grpc-task")
-    async def grpc_task_handler():
-        print("Received a job: grpc-task")
-        return {"message": "Task 'Initiate Equipment Install' completed successfully"}
+    @worker.task(task_type="NotifyAdministrator_HT")
+    async def notify_administrator_handler():
+        print("Received a job: Notify Administrator")
+        return {"message": "Task 'Notify Administrator' completed successfully"}
 
     # Start the worker
-    print("Starting Equipment Requestor worker...")
-    await worker.work()
+    print("Starting Notify Administrator worker...")
 
 if __name__ == "__main__":
     # Use a safe asyncio loop policy

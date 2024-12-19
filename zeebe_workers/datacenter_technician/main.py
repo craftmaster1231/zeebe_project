@@ -17,13 +17,19 @@ async def main():
     worker = ZeebeWorker(grpc_channel)
 
     # Define a job handler
-    @worker.task(task_type="grpc-task")
-    async def grpc_task_handler():
-        print("Received a job: grpc-task")
-        return {"message": "Task 'Initiate Equipment Install' completed successfully"}
+    @worker.task(task_type="ProvisioningSpace_HT")
+    async def provision_space_handler():
+        print("Received a job: Provision Space For Equipment Install")
+        return {"message": "Task 'Provision Space For Equipment Install' completed successfully"}
+
+    @worker.task(task_type="EquipmentInstaller_HT")
+    async def install_equipment_handler():
+        print("Received a job: Install Equipment")
+        return {"message": "Task 'Install Equipment' completed successfully"}
+
 
     # Start the worker
-    print("Starting Equipment Requestor worker...")
+    print("Starting Datacenter Technician worker...")
     await worker.work()
 
 if __name__ == "__main__":
