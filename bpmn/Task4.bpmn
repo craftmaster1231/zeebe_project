@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_112jzix" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.29.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.6.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_112jzix" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.29.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.6.0">
   <bpmn:collaboration id="Collaboration_0c4q6m4">
     <bpmn:participant id="Participant_0vba16o" name="Requester" processRef="Process_0ygm9z9" />
     <bpmn:participant id="Participant_1uhlgmh" name="Data Center Teechnician" processRef="Process_169brmp" />
-    <bpmn:participant id="Participant_1pc9p03" name="Process Owner" processRef="Process_06ojc92" />
+    <bpmn:participant id="Participant_1pc9p03" name="Administrator" processRef="Process_06ojc92" />
     <bpmn:messageFlow id="Flow_1jier1f" sourceRef="Activity_1jn1tkl" targetRef="Event_0lbk613" />
     <bpmn:messageFlow id="Flow_1fjs1yo" sourceRef="Activity_1l8adpm" targetRef="Event_1g4ndrw" />
   </bpmn:collaboration>
@@ -16,10 +16,13 @@
       <bpmn:incoming>Flow_01llo3k</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_01llo3k" sourceRef="Activity_1jn1tkl" targetRef="Event_071ourj" />
-    <bpmn:manualTask id="Activity_1jn1tkl" name="Инициация переименования">
+    <bpmn:serviceTask id="Activity_1jn1tkl" name="Инициация переименования">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="ServerRenameInitiator_HT" retries="3" />
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_0gnt8bh</bpmn:incoming>
       <bpmn:outgoing>Flow_01llo3k</bpmn:outgoing>
-    </bpmn:manualTask>
+    </bpmn:serviceTask>
   </bpmn:process>
   <bpmn:process id="Process_169brmp" isExecutable="false">
     <bpmn:startEvent id="Event_0lbk613" name="Запрос на инициацию переименования">
@@ -37,7 +40,7 @@
     <bpmn:endEvent id="Event_18f0jj6">
       <bpmn:incoming>Flow_1fttwav</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sendTask id="Activity_1l8adpm" name="Уведомить администратора">
+    <bpmn:sendTask id="Activity_1l8adpm">
       <bpmn:incoming>Flow_1akyb9t</bpmn:incoming>
       <bpmn:outgoing>Flow_1wzyab8</bpmn:outgoing>
     </bpmn:sendTask>
@@ -46,10 +49,13 @@
     <bpmn:sequenceFlow id="Flow_1fttwav" name="Нет" sourceRef="Gateway_0f0zz7u" targetRef="Event_18f0jj6" />
     <bpmn:sequenceFlow id="Flow_1akyb9t" name="да" sourceRef="Gateway_0f0zz7u" targetRef="Activity_1l8adpm" />
     <bpmn:sequenceFlow id="Flow_1wzyab8" sourceRef="Activity_1l8adpm" targetRef="Event_13d8zr1" />
-    <bpmn:manualTask id="Activity_1vwy961" name="Утверждение установки">
+    <bpmn:serviceTask id="Activity_1vwy961" name="Утверждение установки">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="ChangeServerName_HT" retries="3" />
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_100x6ou</bpmn:incoming>
       <bpmn:outgoing>Flow_1wasdnw</bpmn:outgoing>
-    </bpmn:manualTask>
+    </bpmn:serviceTask>
   </bpmn:process>
   <bpmn:process id="Process_06ojc92" isExecutable="false">
     <bpmn:startEvent id="Event_1g4ndrw" name="Уведомить администратора">
@@ -62,6 +68,9 @@
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_19n51fw" sourceRef="Activity_19jtnu3" targetRef="Event_1myidf2" />
     <bpmn:serviceTask id="Activity_19jtnu3" name="Уведомление администратора">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="NotifyAdministrator_HT" retries="3" />
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_04e7pag</bpmn:incoming>
       <bpmn:outgoing>Flow_19n51fw</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -81,7 +90,7 @@
           <dc:Bounds x="881" y="225" width="58" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1a0znrp_di" bpmnElement="Activity_1jn1tkl">
+      <bpmndi:BPMNShape id="Activity_154b05j_di" bpmnElement="Activity_1jn1tkl">
         <dc:Bounds x="380" y="160" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_0gnt8bh_di" bpmnElement="Flow_0gnt8bh">
@@ -122,9 +131,8 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1iwnsk9_di" bpmnElement="Activity_1l8adpm">
         <dc:Bounds x="690" y="410" width="100" height="80" />
-        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_09fzaax_di" bpmnElement="Activity_1vwy961">
+      <bpmndi:BPMNShape id="Activity_0anzmpg_di" bpmnElement="Activity_1vwy961">
         <dc:Bounds x="390" y="410" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_100x6ou_di" bpmnElement="Flow_100x6ou">
