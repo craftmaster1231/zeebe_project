@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0xewxyz" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.26.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.5.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0xewxyz" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.26.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.5.0">
   <bpmn:collaboration id="Collaboration_045o5ho">
     <bpmn:participant id="Participant_1hrql73" name="Equipment Requestor" processRef="Process_019rhhd" />
     <bpmn:participant id="Participant_13je01p" name="Install Approvers" processRef="Process_0i2ah3o" />
@@ -28,13 +28,20 @@
       <bpmn:outgoing>Flow_0k8i80e</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:sendTask id="Activity_1gv71fj" name="Skip Approval">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="skip_aaproval" retries="3" />
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_0k8i80e</bpmn:incoming>
       <bpmn:outgoing>Flow_0l1v7ey</bpmn:outgoing>
     </bpmn:sendTask>
-    <bpmn:sequenceFlow id="Flow_02shgog" sourceRef="Gateway_0n5uf9x" targetRef="Activity_1jte0sr" />
+    <bpmn:sequenceFlow id="Flow_02shgog" sourceRef="Gateway_0n5uf9x" targetRef="Activity_1jte0sr">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=true</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_06t0ew6" sourceRef="StartEvent_1" targetRef="Activity_0vbqxmy" />
     <bpmn:sequenceFlow id="Flow_1sfodj9" sourceRef="Activity_0vbqxmy" targetRef="Gateway_0n5uf9x" />
-    <bpmn:sequenceFlow id="Flow_0k8i80e" sourceRef="Gateway_0n5uf9x" targetRef="Activity_1gv71fj" />
+    <bpmn:sequenceFlow id="Flow_0k8i80e" sourceRef="Gateway_0n5uf9x" targetRef="Activity_1gv71fj">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=true</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
     <bpmn:endEvent id="Event_0ma8aef">
       <bpmn:incoming>Flow_0l1v7ey</bpmn:incoming>
       <bpmn:incoming>Flow_1kkrd73</bpmn:incoming>
@@ -42,6 +49,9 @@
     <bpmn:sequenceFlow id="Flow_0l1v7ey" sourceRef="Activity_1gv71fj" targetRef="Event_0ma8aef" />
     <bpmn:sequenceFlow id="Flow_1kkrd73" sourceRef="Activity_1jte0sr" targetRef="Event_0ma8aef" />
     <bpmn:sendTask id="Activity_1jte0sr" name="Start Approval">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="start_approval" retries="3" />
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_02shgog</bpmn:incoming>
       <bpmn:outgoing>Flow_1kkrd73</bpmn:outgoing>
     </bpmn:sendTask>
@@ -56,7 +66,7 @@
   <bpmn:process id="Process_0i2ah3o" isExecutable="false">
     <bpmn:startEvent id="Event_1gdxg8t">
       <bpmn:outgoing>Flow_1p768pz</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_1vjfihz" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1vjfihz" messageRef="Message_3bslua7" />
     </bpmn:startEvent>
     <bpmn:exclusiveGateway id="Gateway_0pva4ny">
       <bpmn:incoming>Flow_02pt0vi</bpmn:incoming>
@@ -99,7 +109,7 @@
     </bpmn:sendTask>
     <bpmn:startEvent id="Event_1ke6goc">
       <bpmn:outgoing>Flow_1nw9q9p</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_0i5dlan" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0i5dlan" messageRef="Message_2ikvuu8" />
     </bpmn:startEvent>
     <bpmn:sendTask id="Activity_0fi5ofr">
       <bpmn:incoming>Flow_0a96nsp</bpmn:incoming>
@@ -230,6 +240,8 @@
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_0zacy12" sourceRef="Activity_0vd7n2a" targetRef="Event_05zdgmc" />
   </bpmn:process>
+  <bpmn:message id="Message_2ikvuu8" name="skip_aaproval" />
+  <bpmn:message id="Message_3bslua7" name="start_approval" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_045o5ho">
       <bpmndi:BPMNShape id="Participant_1hrql73_di" bpmnElement="Participant_1hrql73" isHorizontal="true">
