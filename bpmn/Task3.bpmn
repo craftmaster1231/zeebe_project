@@ -2,7 +2,7 @@
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_04t3oot" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.29.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.6.0">
   <bpmn:collaboration id="Collaboration_1nqn78z">
     <bpmn:participant id="Participant_1hrql73" name="Equipment Requestor" processRef="Process_019rhhd" />
-    <bpmn:participant id="Participant_13je01p" name="Movel Approvers" processRef="Process_0i2ah3o" />
+    <bpmn:participant id="Participant_13je01p" name="Move Approvers" processRef="Process_0i2ah3o" />
     <bpmn:participant id="Participant_1cqr2tl" name="DataCenter Technician" processRef="Process_16sypet" />
     <bpmn:participant id="Participant_1w9fysh" name="Power Technician" processRef="Process_1g12ttp" />
     <bpmn:participant id="Participant_1ob5e1e" name="Network Provisioner" processRef="Process_0x0lr8h" />
@@ -88,7 +88,7 @@
     <bpmn:sequenceFlow id="Flow_0085hfx" sourceRef="Event_1xmtpx7" targetRef="Activity_1ubu2aq" />
     <bpmn:serviceTask id="Activity_1ubu2aq" name="отклонить или подтвердить">
       <bpmn:extensionElements>
-        <zeebe:taskDefinition type="MoveApprover_HT" />
+        <zeebe:taskDefinition type="EquipmentMoveApprover_HT" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0085hfx</bpmn:incoming>
       <bpmn:outgoing>Flow_0yunnu6</bpmn:outgoing>
@@ -99,31 +99,10 @@
     </bpmn:sendTask>
   </bpmn:process>
   <bpmn:process id="Process_16sypet" isExecutable="false">
-    <bpmn:startEvent id="Event_0c3s80g">
-      <bpmn:outgoing>Flow_0n3yops</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_0w9uiqx" />
-    </bpmn:startEvent>
-    <bpmn:endEvent id="Event_1cm5dmq">
-      <bpmn:incoming>Flow_0c67xta</bpmn:incoming>
-    </bpmn:endEvent>
-    <bpmn:sendTask id="Activity_1djnns3">
-      <bpmn:incoming>Flow_1hr2vi8</bpmn:incoming>
-      <bpmn:outgoing>Flow_0c67xta</bpmn:outgoing>
-    </bpmn:sendTask>
-    <bpmn:startEvent id="Event_03kjqwb">
-      <bpmn:outgoing>Flow_0nucqxs</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_0yx2bcx" />
-    </bpmn:startEvent>
-    <bpmn:sequenceFlow id="Flow_0n3yops" sourceRef="Event_0c3s80g" targetRef="Activity_19cgnzn" />
-    <bpmn:sequenceFlow id="Flow_0c67xta" sourceRef="Activity_1djnns3" targetRef="Event_1cm5dmq" />
-    <bpmn:sequenceFlow id="Flow_1hr2vi8" sourceRef="Activity_0hnbpbb" targetRef="Activity_1djnns3" />
     <bpmn:sequenceFlow id="Flow_0nucqxs" sourceRef="Event_03kjqwb" targetRef="Activity_0hnbpbb" />
-    <bpmn:serviceTask id="Activity_19cgnzn" name="Подготовка места">
-      <bpmn:extensionElements>
-        <zeebe:taskDefinition type="ProvisionSpace_HT" retries="3" />
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_0n3yops</bpmn:incoming>
-    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1hr2vi8" sourceRef="Activity_0hnbpbb" targetRef="Activity_1djnns3" />
+    <bpmn:sequenceFlow id="Flow_0c67xta" sourceRef="Activity_1djnns3" targetRef="Event_1cm5dmq" />
+    <bpmn:sequenceFlow id="Flow_0n3yops" sourceRef="Event_0c3s80g" targetRef="Activity_19cgnzn" />
     <bpmn:serviceTask id="Activity_0hnbpbb" name="Физическое перемещение">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="MoveDevicePhysically_HT" retries="3" />
@@ -131,6 +110,27 @@
       <bpmn:incoming>Flow_0nucqxs</bpmn:incoming>
       <bpmn:outgoing>Flow_1hr2vi8</bpmn:outgoing>
     </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_19cgnzn" name="Подготовка места">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="ProvisionSpace_HT" retries="3" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0n3yops</bpmn:incoming>
+    </bpmn:serviceTask>
+    <bpmn:startEvent id="Event_03kjqwb">
+      <bpmn:outgoing>Flow_0nucqxs</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0yx2bcx" />
+    </bpmn:startEvent>
+    <bpmn:sendTask id="Activity_1djnns3">
+      <bpmn:incoming>Flow_1hr2vi8</bpmn:incoming>
+      <bpmn:outgoing>Flow_0c67xta</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:endEvent id="Event_1cm5dmq">
+      <bpmn:incoming>Flow_0c67xta</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:startEvent id="Event_0c3s80g">
+      <bpmn:outgoing>Flow_0n3yops</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0w9uiqx" />
+    </bpmn:startEvent>
   </bpmn:process>
   <bpmn:process id="Process_1g12ttp" isExecutable="false">
     <bpmn:startEvent id="Event_0ayluqx">
@@ -151,18 +151,18 @@
     <bpmn:sequenceFlow id="Flow_0r4qtw3" sourceRef="Activity_1pluooz" targetRef="Activity_0pfdupc" />
     <bpmn:sequenceFlow id="Flow_1cbgznl" sourceRef="Activity_1n5eb1h" targetRef="Activity_1bwoc1o" />
     <bpmn:sequenceFlow id="Flow_019im3y" sourceRef="Activity_1bwoc1o" targetRef="Event_0zh70tx" />
+    <bpmn:serviceTask id="Activity_1n5eb1h" name="Отключение питания">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="DecommissionPower_HT" retries="3" />
+      </bpmn:extensionElements>
+      <bpmn:outgoing>Flow_1cbgznl</bpmn:outgoing>
+    </bpmn:serviceTask>
     <bpmn:serviceTask id="Activity_1pluooz" name="Подготовка питания">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="ProvisioningPower_HT" retries="3" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1ftavfy</bpmn:incoming>
       <bpmn:outgoing>Flow_0r4qtw3</bpmn:outgoing>
-    </bpmn:serviceTask>
-    <bpmn:serviceTask id="Activity_1n5eb1h" name="Отключение питания">
-      <bpmn:extensionElements>
-        <zeebe:taskDefinition type="DecommissionPower_HT" retries="3" />
-      </bpmn:extensionElements>
-      <bpmn:outgoing>Flow_1cbgznl</bpmn:outgoing>
     </bpmn:serviceTask>
   </bpmn:process>
   <bpmn:process id="Process_0x0lr8h" isExecutable="false">
@@ -189,10 +189,6 @@
     </bpmn:serviceTask>
   </bpmn:process>
   <bpmn:process id="Process_1n269qn" isExecutable="false">
-    <bpmn:startEvent id="Event_1obx2l5">
-      <bpmn:outgoing>Flow_1nenwi8</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_0c7cyfr" />
-    </bpmn:startEvent>
     <bpmn:sendTask id="Activity_0xrnnga">
       <bpmn:incoming>Flow_1h1knvj</bpmn:incoming>
     </bpmn:sendTask>
@@ -207,7 +203,6 @@
     <bpmn:endEvent id="Event_1lg1hpf">
       <bpmn:incoming>Flow_0wujaqs</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_1nenwi8" sourceRef="Event_1obx2l5" targetRef="Activity_1jvwlsd" />
     <bpmn:sequenceFlow id="Flow_1h1knvj" sourceRef="Activity_1jvwlsd" targetRef="Activity_0xrnnga" />
     <bpmn:sequenceFlow id="Flow_15as7la" sourceRef="Event_095zney" targetRef="Activity_0qgium7" />
     <bpmn:sequenceFlow id="Flow_1k0x0vj" sourceRef="Activity_0qgium7" targetRef="Activity_1v40w21" />
@@ -226,6 +221,11 @@
       <bpmn:incoming>Flow_15as7la</bpmn:incoming>
       <bpmn:outgoing>Flow_1k0x0vj</bpmn:outgoing>
     </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1nenwi8" sourceRef="Event_1obx2l5" targetRef="Activity_1jvwlsd" />
+    <bpmn:startEvent id="Event_1obx2l5">
+      <bpmn:outgoing>Flow_1nenwi8</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0c7cyfr" />
+    </bpmn:startEvent>
   </bpmn:process>
   <bpmn:process id="Process_1unyrt3" isExecutable="false">
     <bpmn:startEvent id="Event_17fx2y6">
@@ -246,24 +246,24 @@
       <bpmn:outgoing>Flow_0mrgese</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_0483ng3" />
     </bpmn:startEvent>
-    <bpmn:sequenceFlow id="Flow_1hochrs" sourceRef="Event_17fx2y6" targetRef="Activity_1owvphg" />
-    <bpmn:sequenceFlow id="Flow_0qzaz6v" sourceRef="Activity_1owvphg" targetRef="Activity_0m8marc" />
     <bpmn:sequenceFlow id="Flow_0j0nxu5" sourceRef="Activity_0m8marc" targetRef="Event_0sfcmvs" />
     <bpmn:sequenceFlow id="Flow_1ty733j" sourceRef="Activity_16qfbqz" targetRef="Activity_0ox33e3" />
     <bpmn:sequenceFlow id="Flow_0mrgese" sourceRef="Event_1qqs00o" targetRef="Activity_16qfbqz" />
-    <bpmn:serviceTask id="Activity_1owvphg" name="Отключение сетевых кабелей">
-      <bpmn:extensionElements>
-        <zeebe:taskDefinition type="DecommissionNetworkCabling_HT" retries="3" />
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_1hochrs</bpmn:incoming>
-      <bpmn:outgoing>Flow_0qzaz6v</bpmn:outgoing>
-    </bpmn:serviceTask>
     <bpmn:serviceTask id="Activity_16qfbqz" name="Подготовка сетевых кабелей">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="ProvisionNetworkCabling_HT" retries="3" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0mrgese</bpmn:incoming>
       <bpmn:outgoing>Flow_1ty733j</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0qzaz6v" sourceRef="Activity_1owvphg" targetRef="Activity_0m8marc" />
+    <bpmn:sequenceFlow id="Flow_1hochrs" sourceRef="Event_17fx2y6" targetRef="Activity_1owvphg" />
+    <bpmn:serviceTask id="Activity_1owvphg" name="Отключение сетевых кабелей">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="DecommissionNetworkCabling_HT" retries="3" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1hochrs</bpmn:incoming>
+      <bpmn:outgoing>Flow_0qzaz6v</bpmn:outgoing>
     </bpmn:serviceTask>
   </bpmn:process>
   <bpmn:process id="Process_0orkh7i" isExecutable="false">

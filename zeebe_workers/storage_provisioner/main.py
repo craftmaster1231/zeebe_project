@@ -22,6 +22,11 @@ async def main():
         print("Received a job: Provision Storage For Equipment Install")
         return {"message": "Task 'Provision Storage For Equipment Install' completed successfully"}
 
+    @worker.task(task_type="DecommissionStorage_HT")
+    async def provision_storage_handler():
+        print("Received a job: Decommission Storage For Equipment Move")
+        return {"message": "Task 'Decommission Storage For Equipment Move' completed successfully"}
+
     # Start the worker
     print("Starting Storage Provisioner worker...")
     await worker.work()
