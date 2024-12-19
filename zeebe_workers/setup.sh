@@ -2,6 +2,7 @@
 
 # Base directory containing all worker directories
 BASE_DIR=$(pwd)
+PIDS=()  # Array to store worker process IDs
 
 # Setup a common Python virtual environment
 echo "Setting up common virtual environment..."
@@ -20,6 +21,9 @@ else
   echo "No requirements.txt found. Make sure dependencies are manually managed."
 fi
 
+# Trap SIGINT (Ctrl+C) to kill all worker processes
+trap 'echo "Stopping all workers..."; for pid in "${PIDS[@]}"; do kill $pid 2>/dev/null; done; exit' SIGINT
+
 # Start workers and output logs in real-time
 echo "Starting all workers..."
 for dir in $(find . -type d -not -path "./venv*" -not -path "."); do
@@ -27,6 +31,7 @@ for dir in $(find . -type d -not -path "./venv*" -not -path "."); do
     echo "Starting Zeebe worker in $dir..."
     cd "$dir"
     python main.py &
+    PIDS+=($!)  # Store the PID of the worker process
     cd "$BASE_DIR"
   fi
 done
