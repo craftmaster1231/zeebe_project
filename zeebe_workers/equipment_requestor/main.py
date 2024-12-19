@@ -21,6 +21,21 @@ async def main():
         print("Received a job: Initiate Equipment Install")
         return {"message": "Task 'Initiate Equipment Install' completed successfully"}
 
+    @worker.task(task_type="InitiateDeviceMove_HT")
+    async def initiate_equipment_install_handler():
+        print("Received a job: Initiate Device Move")
+        return {"message": "Task 'Initiate Device Move' completed successfully"}
+
+    @worker.task(task_type="ServerRenameInitiator_HT")
+    async def initiate_equipment_install_handler():
+        print("Received a job: Server Rename Initiator")
+        return {"message": "Task 'Server Rename Initiator' completed successfully"}
+
+    @worker.task(task_type="ApproveEquipmentMoveRequest_HT")
+    async def initiate_equipment_install_handler():
+        print("Received a job: Approve Equipment Move Request")
+        return {"message": "Task 'Approve Equipment Move Request' completed successfully"}
+
     # Start the worker
     print("Starting Equipment Requestor worker...")
     await worker.work()
