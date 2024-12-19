@@ -1,0 +1,59 @@
+Setting up common virtual environment...
+Installing dependencies...
+Requirement already satisfied: pip in ./venv/lib/python3.12/site-packages (24.3.1)
+Requirement already satisfied: pyzeebe==4.2.0 in ./venv/lib/python3.12/site-packages (from -r /home/alex/SPPR/zeebe_project/zeebe_workers/requirements.txt (line 1)) (4.2.0)
+Requirement already satisfied: grpcio==1.68.1 in ./venv/lib/python3.12/site-packages (from -r /home/alex/SPPR/zeebe_project/zeebe_workers/requirements.txt (line 2)) (1.68.1)
+Requirement already satisfied: anyio<5.0.0,>=4.6.0 in ./venv/lib/python3.12/site-packages (from pyzeebe==4.2.0->-r /home/alex/SPPR/zeebe_project/zeebe_workers/requirements.txt (line 1)) (4.7.0)
+Requirement already satisfied: oauthlib<4.0.0,>=3.1.0 in ./venv/lib/python3.12/site-packages (from pyzeebe==4.2.0->-r /home/alex/SPPR/zeebe_project/zeebe_workers/requirements.txt (line 1)) (3.2.2)
+Requirement already satisfied: requests-oauthlib<3.0.0,>=1.3.0 in ./venv/lib/python3.12/site-packages (from pyzeebe==4.2.0->-r /home/alex/SPPR/zeebe_project/zeebe_workers/requirements.txt (line 1)) (2.0.0)
+Requirement already satisfied: typing-extensions<5.0.0,>=4.11.0 in ./venv/lib/python3.12/site-packages (from pyzeebe==4.2.0->-r /home/alex/SPPR/zeebe_project/zeebe_workers/requirements.txt (line 1)) (4.12.2)
+Requirement already satisfied: zeebe-grpc<9.0.0,>=8.4.0 in ./venv/lib/python3.12/site-packages (from pyzeebe==4.2.0->-r /home/alex/SPPR/zeebe_project/zeebe_workers/requirements.txt (line 1)) (8.4.13)
+Requirement already satisfied: idna>=2.8 in ./venv/lib/python3.12/site-packages (from anyio<5.0.0,>=4.6.0->pyzeebe==4.2.0->-r /home/alex/SPPR/zeebe_project/zeebe_workers/requirements.txt (line 1)) (3.10)
+Requirement already satisfied: sniffio>=1.1 in ./venv/lib/python3.12/site-packages (from anyio<5.0.0,>=4.6.0->pyzeebe==4.2.0->-r /home/alex/SPPR/zeebe_project/zeebe_workers/requirements.txt (line 1)) (1.3.1)
+Requirement already satisfied: requests>=2.0.0 in ./venv/lib/python3.12/site-packages (from requests-oauthlib<3.0.0,>=1.3.0->pyzeebe==4.2.0->-r /home/alex/SPPR/zeebe_project/zeebe_workers/requirements.txt (line 1)) (2.32.3)
+Requirement already satisfied: protobuf~=4.21 in ./venv/lib/python3.12/site-packages (from zeebe-grpc<9.0.0,>=8.4.0->pyzeebe==4.2.0->-r /home/alex/SPPR/zeebe_project/zeebe_workers/requirements.txt (line 1)) (4.25.5)
+Requirement already satisfied: charset-normalizer<4,>=2 in ./venv/lib/python3.12/site-packages (from requests>=2.0.0->requests-oauthlib<3.0.0,>=1.3.0->pyzeebe==4.2.0->-r /home/alex/SPPR/zeebe_project/zeebe_workers/requirements.txt (line 1)) (3.4.0)
+Requirement already satisfied: urllib3<3,>=1.21.1 in ./venv/lib/python3.12/site-packages (from requests>=2.0.0->requests-oauthlib<3.0.0,>=1.3.0->pyzeebe==4.2.0->-r /home/alex/SPPR/zeebe_project/zeebe_workers/requirements.txt (line 1)) (2.2.3)
+Requirement already satisfied: certifi>=2017.4.17 in ./venv/lib/python3.12/site-packages (from requests>=2.0.0->requests-oauthlib<3.0.0,>=1.3.0->pyzeebe==4.2.0->-r /home/alex/SPPR/zeebe_project/zeebe_workers/requirements.txt (line 1)) (2024.12.14)
+Processing directory: ./install_approvers
+Starting Zeebe worker in ./install_approvers...
+Worker in ./install_approvers started successfully.
+Completed processing ./install_approvers.
+------------------------------
+Processing directory: ./administrator
+Starting Zeebe worker in ./administrator...
+Starting Notify Administrator worker...
+Worker in ./administrator failed to start. Check ./administrator/worker.log for details.
+Completed processing ./administrator.
+------------------------------
+Processing directory: ./storage_provisioner
+Starting Zeebe worker in ./storage_provisioner...
+Worker in ./storage_provisioner started successfully.
+Completed processing ./storage_provisioner.
+------------------------------
+Processing directory: ./network_cabler
+Starting Zeebe worker in ./network_cabler...
+Worker in ./network_cabler started successfully.
+Completed processing ./network_cabler.
+------------------------------
+Processing directory: ./network_provisioner
+Starting Zeebe worker in ./network_provisioner...
+Worker in ./network_provisioner started successfully.
+Completed processing ./network_provisioner.
+------------------------------
+Processing directory: ./datacenter_technician
+Starting Zeebe worker in ./datacenter_technician...
+Worker in ./datacenter_technician started successfully.
+Completed processing ./datacenter_technician.
+------------------------------
+Processing directory: ./equipment_requestor
+Starting Zeebe worker in ./equipment_requestor...
+Worker in ./equipment_requestor started successfully.
+Completed processing ./equipment_requestor.
+------------------------------
+Processing directory: ./power_technician
+Starting Zeebe worker in ./power_technician...
+Worker in ./power_technician started successfully.
+Completed processing ./power_technician.
+------------------------------
+All workers processed.
