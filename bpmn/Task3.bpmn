@@ -53,11 +53,7 @@
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="send-message" retries="3" />
         <zeebe:ioMapping>
-          <zeebe:input source="=&#34;userSignup&#34;" target="event_type" />
-          <zeebe:input source="=&#34;user123&#34;" target="correlation_key" />
-          <zeebe:input source="=&#34;john_doe&#34;" target="event_payload.username" />
-          <zeebe:input source="=&#34;john.doe@example.com&#34;" target="event_payload.email" />
-          <zeebe:input source="=&#34;2024-12-20&#34;" target="event_payload.signup_date" />
+          <zeebe:input source="=&#34;prepare_place&#34;" target="message_type" />
         </zeebe:ioMapping>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1njml1h</bpmn:incoming>
@@ -68,11 +64,7 @@
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="send-message" retries="3" />
         <zeebe:ioMapping>
-          <zeebe:input source="=&#34;userSignup&#34;" target="event_type" />
-          <zeebe:input source="=&#34;user123&#34;" target="correlation_key" />
-          <zeebe:input source="=&#34;john_doe&#34;" target="event_payload.username" />
-          <zeebe:input source="=&#34;john.doe@example.com&#34;" target="event_payload.email" />
-          <zeebe:input source="=&#34;2024-12-20&#34;" target="event_payload.signup_date" />
+          <zeebe:input source="=&#34;start_approval&#34;" target="message_type" />
         </zeebe:ioMapping>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0vhtp6c</bpmn:incoming>
@@ -107,11 +99,7 @@
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="send-message" retries="3" />
         <zeebe:ioMapping>
-          <zeebe:input source="=&#34;userSignup&#34;" target="event_type" />
-          <zeebe:input source="=&#34;user123&#34;" target="correlation_key" />
-          <zeebe:input source="=&#34;john_doe&#34;" target="event_payload.username" />
-          <zeebe:input source="=&#34;john.doe@example.com&#34;" target="event_payload.email" />
-          <zeebe:input source="=&#34;2024-12-20&#34;" target="event_payload.signup_date" />
+          <zeebe:input source="=&#34;prepare_place&#34;" target="message_type" />
         </zeebe:ioMapping>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_135be1g</bpmn:incoming>
@@ -140,11 +128,7 @@
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="send-message" retries="3" />
         <zeebe:ioMapping>
-          <zeebe:input source="=&#34;userSignup&#34;" target="event_type" />
-          <zeebe:input source="=&#34;user123&#34;" target="correlation_key" />
-          <zeebe:input source="=&#34;john_doe&#34;" target="event_payload.username" />
-          <zeebe:input source="=&#34;john.doe@example.com&#34;" target="event_payload.email" />
-          <zeebe:input source="=&#34;2024-12-20&#34;" target="event_payload.signup_date" />
+          <zeebe:input source="=&#34;decommission_power&#34;" target="message_type" />
         </zeebe:ioMapping>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1hby1yf</bpmn:incoming>
@@ -163,11 +147,7 @@
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="send-message" retries="3" />
         <zeebe:ioMapping>
-          <zeebe:input source="=&#34;userSignup&#34;" target="event_type" />
-          <zeebe:input source="=&#34;user123&#34;" target="correlation_key" />
-          <zeebe:input source="=&#34;john_doe&#34;" target="event_payload.username" />
-          <zeebe:input source="=&#34;john.doe@example.com&#34;" target="event_payload.email" />
-          <zeebe:input source="=&#34;2024-12-20&#34;" target="event_payload.signup_date" />
+          <zeebe:input source="=&#34;prepare_power&#34;" target="message_type" />
         </zeebe:ioMapping>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_15iq6ok</bpmn:incoming>
@@ -182,11 +162,7 @@
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="send-message" retries="3" />
         <zeebe:ioMapping>
-          <zeebe:input source="=&#34;userSignup&#34;" target="event_type" />
-          <zeebe:input source="=&#34;user123&#34;" target="correlation_key" />
-          <zeebe:input source="=&#34;john_doe&#34;" target="event_payload.username" />
-          <zeebe:input source="=&#34;john.doe@example.com&#34;" target="event_payload.email" />
-          <zeebe:input source="=&#34;2024-12-20&#34;" target="event_payload.signup_date" />
+          <zeebe:input source="=&#34;prepare_storage&#34;" target="message_type" />
         </zeebe:ioMapping>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0r4qtw3</bpmn:incoming>
@@ -216,11 +192,7 @@
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="send-message" retries="3" />
         <zeebe:ioMapping>
-          <zeebe:input source="=&#34;userSignup&#34;" target="event_type" />
-          <zeebe:input source="=&#34;user123&#34;" target="correlation_key" />
-          <zeebe:input source="=&#34;john_doe&#34;" target="event_payload.username" />
-          <zeebe:input source="=&#34;john.doe@example.com&#34;" target="event_payload.email" />
-          <zeebe:input source="=&#34;2024-12-20&#34;" target="event_payload.signup_date" />
+          <zeebe:input source="=&#34;decommission_storage&#34;" target="message_type" />
         </zeebe:ioMapping>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0w3mzb0</bpmn:incoming>
@@ -245,11 +217,7 @@
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="send-message" retries="3" />
         <zeebe:ioMapping>
-          <zeebe:input source="=&#34;userSignup&#34;" target="event_type" />
-          <zeebe:input source="=&#34;user123&#34;" target="correlation_key" />
-          <zeebe:input source="=&#34;john_doe&#34;" target="event_payload.username" />
-          <zeebe:input source="=&#34;john.doe@example.com&#34;" target="event_payload.email" />
-          <zeebe:input source="=&#34;2024-12-20&#34;" target="event_payload.signup_date" />
+          <zeebe:input source="=&#34;prepare_network_cabler&#34;" target="message_type" />
         </zeebe:ioMapping>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0umf7rw</bpmn:incoming>
@@ -287,11 +255,7 @@
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="send-message" retries="3" />
         <zeebe:ioMapping>
-          <zeebe:input source="=&#34;userSignup&#34;" target="event_type" />
-          <zeebe:input source="=&#34;user123&#34;" target="correlation_key" />
-          <zeebe:input source="=&#34;john_doe&#34;" target="event_payload.username" />
-          <zeebe:input source="=&#34;john.doe@example.com&#34;" target="event_payload.email" />
-          <zeebe:input source="=&#34;2024-12-20&#34;" target="event_payload.signup_date" />
+          <zeebe:input source="=&#34;decommission_network_cabler&#34;" target="message_type" />
         </zeebe:ioMapping>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_18kle82</bpmn:incoming>
@@ -302,11 +266,7 @@
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="send-message" retries="3" />
         <zeebe:ioMapping>
-          <zeebe:input source="=&#34;userSignup&#34;" target="event_type" />
-          <zeebe:input source="=&#34;user123&#34;" target="correlation_key" />
-          <zeebe:input source="=&#34;john_doe&#34;" target="event_payload.username" />
-          <zeebe:input source="=&#34;john.doe@example.com&#34;" target="event_payload.email" />
-          <zeebe:input source="=&#34;2024-12-20&#34;" target="event_payload.signup_date" />
+          <zeebe:input source="=&#34;prepare_network&#34;" target="message_type" />
         </zeebe:ioMapping>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_10crqcg</bpmn:incoming>
@@ -341,11 +301,7 @@
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="send-message" retries="3" />
         <zeebe:ioMapping>
-          <zeebe:input source="=&#34;userSignup&#34;" target="event_type" />
-          <zeebe:input source="=&#34;user123&#34;" target="correlation_key" />
-          <zeebe:input source="=&#34;john_doe&#34;" target="event_payload.username" />
-          <zeebe:input source="=&#34;john.doe@example.com&#34;" target="event_payload.email" />
-          <zeebe:input source="=&#34;2024-12-20&#34;" target="event_payload.signup_date" />
+          <zeebe:input source="=&#34;notify_admin&#34;" target="message_type" />
         </zeebe:ioMapping>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1t5lg55</bpmn:incoming>
