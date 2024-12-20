@@ -20,6 +20,7 @@ async def main():
     @worker.task(task_type="ProvisioningSpace_HT")
     async def provision_space_handler():
         print("Received a job: Provision Space For Equipment Install")
+        print("Task 'Provision Space For Equipment Install' completed successfully")
         return {"message": "Task 'Provision Space For Equipment Install' completed successfully"}
 
     @worker.task(task_type="EquipmentInstaller_HT")
