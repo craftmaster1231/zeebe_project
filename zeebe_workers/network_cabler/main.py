@@ -29,7 +29,7 @@ async def main():
         return {"message": "Task 'Decommission Network Cabling For Equipment Move' completed successfully"}
 
     # Start the worker
-    print("Starting Equipment Requestor worker...")
+    print("Starting Network Cabler worker...")
     await worker.work()
 
 if __name__ == "__main__":
