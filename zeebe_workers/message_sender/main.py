@@ -28,9 +28,6 @@ async def main():
             if not message_type:
                 raise ValueError("Missing 'message_type' in job variables")
 
-            # Process the task
-            print(f"Processing task of type: {message_type}")
-
             # Publish a message to Zeebe
             await client.publish_message(
                 name=message_type,  # Message name
@@ -40,7 +37,7 @@ async def main():
             print(f"Message '{message_type}' published successfully.")
 
         except Exception as e:
-            print(f"Failed to process job: {e}")
+            print(f"Failed to send message: {e}")
 
 
     # Start the worker

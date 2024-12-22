@@ -19,6 +19,7 @@ async def main():
     @worker.task(task_type="EquipmentInstallInitiator_HT")
     async def initiate_equipment_install_handler():
         print("Received a job: Initiate Equipment Install")
+        print("Task 'Initiate Equipment Install' completed successfully")
         return {"message": "Task 'Initiate Equipment Install' completed successfully"}
 
     @worker.task(task_type="InitiateDeviceMove_HT")
