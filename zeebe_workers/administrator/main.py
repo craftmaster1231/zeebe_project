@@ -24,6 +24,7 @@ async def main():
 
     # Start the worker
     print("Starting Notify Administrator worker...")
+    await worker.work()
 
 if __name__ == "__main__":
     # Use a safe asyncio loop policy
