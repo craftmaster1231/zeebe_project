@@ -23,6 +23,10 @@ async def main():
         print("Received a job: Provision Network Cabling For Equipment Install")
         return {"message": "Task 'Provision Network Cabling For Equipment Install' completed successfully"}
 
+    @worker.task(task_type="DecommissionNetworkCabling_HT")
+    async def provision_cabling_handler():
+        print("Received a job: Decommission Network Cabling For Equipment Move")
+        return {"message": "Task 'Decommission Network Cabling For Equipment Move' completed successfully"}
 
     # Start the worker
     print("Starting Network Cabler worker...")

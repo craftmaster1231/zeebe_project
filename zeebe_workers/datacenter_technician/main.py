@@ -28,6 +28,16 @@ async def main():
         print("Received a job: Install Equipment")
         return {"message": "Task 'Install Equipment' completed successfully"}
 
+    @worker.task(task_type="MoveDevicePhysically_HT")
+    async def install_equipment_handler():
+        print("Received a job: Move Device Physically For Move Equipment")
+        return {"message": "Task 'Move Device Physically For Move Equipment' completed successfully"}
+
+    @worker.task(task_type="ChangeServerName_HT")
+    async def install_equipment_handler():
+        print("Received a job: Change Server Name For Rename Equipment")
+        return {"message": "Task 'Change Server Name For Rename Equipment' completed successfully"}
+
 
     # Start the worker
     print("Starting Datacenter Technician worker...")
