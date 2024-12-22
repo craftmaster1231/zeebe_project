@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Base directory containing all worker directories
-BASE_DIR=$(pwd)
+BASE_DIR=$(pwd)/../zeebe_workers/
 PIDS=()  # Array to store worker process IDs
 
 # Setup a common Python virtual environment
