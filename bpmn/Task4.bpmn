@@ -56,7 +56,7 @@
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="send-message" retries="3" />
         <zeebe:ioMapping>
-          <zeebe:input source="=&#34;start_notify_admin&#34;" target="message_type" />
+          <zeebe:input source="=&#34;start_notify&#34;" target="message_type" />
         </zeebe:ioMapping>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1akyb9t</bpmn:incoming>
@@ -70,7 +70,7 @@
       <bpmn:messageEventDefinition id="MessageEventDefinition_0qht75a" messageRef="Message_2j5s33c" />
     </bpmn:startEvent>
   </bpmn:process>
-  <bpmn:process id="Process_06ojc92" isExecutable="true">
+  <bpmn:process id="Process_06ojc92" isExecutable="false">
     <bpmn:sequenceFlow id="Flow_04e7pag" sourceRef="Event_1g4ndrw" targetRef="Activity_19jtnu3" />
     <bpmn:endEvent id="Event_1myidf2">
       <bpmn:incoming>Flow_19n51fw</bpmn:incoming>
@@ -89,7 +89,7 @@
     </bpmn:startEvent>
   </bpmn:process>
   <bpmn:message id="Message_2j5s33c" name="start_rename_approval" />
-  <bpmn:message id="Message_0tkggn6" name="start_notify_admin" />
+  <bpmn:message id="Message_0tkggn6" name="start_notify" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_0c4q6m4">
       <bpmndi:BPMNShape id="Participant_0vba16o_di" bpmnElement="Participant_0vba16o" isHorizontal="true">
