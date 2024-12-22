@@ -36,6 +36,7 @@ async def main():
     @worker.task(task_type="ChangeServerName_HT")
     async def install_equipment_handler():
         print("Received a job: Change Server Name For Rename Equipment")
+        print("Task 'Change Server Name For Rename Equipment' completed successfully")
         return {"message": "Task 'Change Server Name For Rename Equipment' completed successfully"}
 
 

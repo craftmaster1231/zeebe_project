@@ -30,6 +30,7 @@ async def main():
     @worker.task(task_type="ServerRenameInitiator_HT")
     async def initiate_equipment_install_handler():
         print("Received a job: Server Rename Initiator")
+        print("Task 'Server Rename Initiator' completed successfully")
         return {"message": "Task 'Server Rename Initiator' completed successfully"}
 
     @worker.task(task_type="ApproveEquipmentMoveRequest_HT")
