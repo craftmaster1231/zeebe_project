@@ -251,12 +251,7 @@
     </bpmn:extensionElements>
   </bpmn:message>
   <bpmn:process id="Process_14d5o8g" isExecutable="true">
-    <bpmn:startEvent id="Event_02d8edv">
-      <bpmn:outgoing>Flow_0btntwi</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_08v22uy" messageRef="Message_0ethth6" />
-    </bpmn:startEvent>
-    <bpmn:sequenceFlow id="Flow_0btntwi" sourceRef="Event_02d8edv" targetRef="Activity_14sd6yp" />
-    <bpmn:serviceTask id="Activity_14sd6yp">
+    <bpmn:serviceTask id="Activity_14sd6yp" name="Notify Administrator">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="NotifyAdministrator_HT" retries="3" />
       </bpmn:extensionElements>
@@ -266,6 +261,11 @@
     <bpmn:endEvent id="Event_1k2r77j">
       <bpmn:incoming>Flow_1hptqtu</bpmn:incoming>
     </bpmn:endEvent>
+    <bpmn:startEvent id="Event_02d8edv">
+      <bpmn:outgoing>Flow_0btntwi</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_08v22uy" messageRef="Message_0ethth6" />
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0btntwi" sourceRef="Event_02d8edv" targetRef="Activity_14sd6yp" />
     <bpmn:sequenceFlow id="Flow_1hptqtu" sourceRef="Activity_14sd6yp" targetRef="Event_1k2r77j" />
   </bpmn:process>
   <bpmn:message id="Message_0ethth6" name="start_notify" />
@@ -464,25 +464,26 @@
         <di:waypoint x="792" y="1420" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Participant_0v2x3dy_di" bpmnElement="Participant_0v2x3dy" isHorizontal="true">
-        <dc:Bounds x="910" y="840" width="450" height="250" />
+        <dc:Bounds x="910" y="860" width="450" height="250" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_02d8edv_di" bpmnElement="Event_02d8edv">
-        <dc:Bounds x="992" y="952" width="36" height="36" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0l6j9b3_di" bpmnElement="Activity_14sd6yp">
-        <dc:Bounds x="1080" y="930" width="100" height="80" />
+        <dc:Bounds x="1130" y="950" width="100" height="80" />
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1k2r77j_di" bpmnElement="Event_1k2r77j">
-        <dc:Bounds x="1232" y="952" width="36" height="36" />
+        <dc:Bounds x="1282" y="972" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_02d8edv_di" bpmnElement="Event_02d8edv">
+        <dc:Bounds x="1042" y="972" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_0btntwi_di" bpmnElement="Flow_0btntwi">
-        <di:waypoint x="1028" y="970" />
-        <di:waypoint x="1080" y="970" />
+        <di:waypoint x="1078" y="990" />
+        <di:waypoint x="1130" y="990" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1hptqtu_di" bpmnElement="Flow_1hptqtu">
-        <di:waypoint x="1180" y="970" />
-        <di:waypoint x="1232" y="970" />
+        <di:waypoint x="1230" y="990" />
+        <di:waypoint x="1282" y="990" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0g0cvi3_di" bpmnElement="Flow_0g0cvi3">
         <di:waypoint x="440" y="266" />
@@ -520,9 +521,7 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0mkat9e_di" bpmnElement="Flow_0mkat9e">
         <di:waypoint x="1060" y="688" />
-        <di:waypoint x="1060" y="820" />
-        <di:waypoint x="1010" y="820" />
-        <di:waypoint x="1010" y="952" />
+        <di:waypoint x="1060" y="972" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0ib5tbh_di" bpmnElement="Flow_0ib5tbh">
         <di:waypoint x="570" y="688" />
