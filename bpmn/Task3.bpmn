@@ -9,7 +9,6 @@
     <bpmn:participant id="Participant_1ezb0qz" name="Storage Provisioner" processRef="Process_1n269qn" />
     <bpmn:participant id="Participant_1jhjtcv" name="Network Cabler" processRef="Process_1unyrt3" />
     <bpmn:participant id="Participant_0wzu5hn" name="Administrator" processRef="Process_0orkh7i" />
-    <bpmn:messageFlow id="Flow_19kxa7b" sourceRef="Activity_04y3n3k" targetRef="Event_0ayluqx" />
     <bpmn:messageFlow id="Flow_1skjuvh" sourceRef="Activity_0pfdupc" targetRef="Event_1obx2l5" />
     <bpmn:messageFlow id="Flow_1tq341k" sourceRef="Event_0ig9wf6" targetRef="Event_0c3s80g" />
     <bpmn:messageFlow id="Flow_119jzsp" sourceRef="Event_1uonaf6" targetRef="Event_1xmtpx7" />
@@ -17,10 +16,11 @@
     <bpmn:messageFlow id="Flow_0vhaqtu" sourceRef="Event_033okra" targetRef="Event_17fx2y6" />
     <bpmn:messageFlow id="Flow_1lh014d" sourceRef="Event_0hb43sh" targetRef="Event_08459oz" />
     <bpmn:messageFlow id="Flow_0jbyogu" sourceRef="Activity_0tk46wv" targetRef="Event_0rj4lcs" />
-    <bpmn:messageFlow id="Flow_1jpyc0z" sourceRef="Activity_11466yl" targetRef="Event_03kjqwb" />
     <bpmn:messageFlow id="Flow_1oc2ane" sourceRef="Event_197g4vm" targetRef="Event_0c3s80g" />
     <bpmn:messageFlow id="Flow_18wq1kw" sourceRef="Event_0t45p95" targetRef="Event_1qqs00o" />
+    <bpmn:messageFlow id="Flow_0w9jd11" sourceRef="Event_02ny2jw" targetRef="Event_0ayluqx" />
     <bpmn:messageFlow id="Flow_0xabqqm" sourceRef="Event_0dqniol" targetRef="Event_0kez21x" />
+    <bpmn:messageFlow id="Flow_0u484h4" sourceRef="Event_0tlc4fc" targetRef="Event_03kjqwb" />
   </bpmn:collaboration>
   <bpmn:process id="Process_019rhhd" isExecutable="true">
     <bpmn:startEvent id="Event_174qyvi">
@@ -106,7 +106,7 @@
       <bpmn:outgoing>Flow_1fwgfmc</bpmn:outgoing>
     </bpmn:serviceTask>
   </bpmn:process>
-  <bpmn:process id="Process_16sypet" isExecutable="false">
+  <bpmn:process id="Process_16sypet" isExecutable="true">
     <bpmn:sequenceFlow id="Flow_0nucqxs" sourceRef="Event_03kjqwb" targetRef="Activity_0hnbpbb" />
     <bpmn:sequenceFlow id="Flow_0n3yops" sourceRef="Event_0c3s80g" targetRef="Activity_19cgnzn" />
     <bpmn:serviceTask id="Activity_0hnbpbb" name="Физическое перемещение">
@@ -116,44 +116,50 @@
       <bpmn:incoming>Flow_0nucqxs</bpmn:incoming>
       <bpmn:outgoing>Flow_1hby1yf</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:startEvent id="Event_03kjqwb">
-      <bpmn:outgoing>Flow_0nucqxs</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_0yx2bcx" messageRef="Message_05q8km5" />
-    </bpmn:startEvent>
     <bpmn:startEvent id="Event_0c3s80g">
       <bpmn:outgoing>Flow_0n3yops</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_0w9uiqx" messageRef="Message_2ci0u0j" />
     </bpmn:startEvent>
-    <bpmn:endEvent id="Event_0dqniol">
-      <bpmn:extensionElements>
-        <zeebe:taskDefinition type="send-message" retries="3" />
-        <zeebe:ioMapping>
-          <zeebe:input source="=&#34;start_dec_power&#34;" target="message_type" />
-        </zeebe:ioMapping>
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_1hby1yf</bpmn:incoming>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_1uja856" />
-    </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_1hby1yf" sourceRef="Activity_0hnbpbb" targetRef="Event_0dqniol" />
-    <bpmn:sequenceFlow id="Flow_15iq6ok" sourceRef="Activity_19cgnzn" targetRef="Activity_04y3n3k" />
     <bpmn:serviceTask id="Activity_19cgnzn" name="Подготовка места">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="ProvisionSpace_HT" retries="3" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0n3yops</bpmn:incoming>
-      <bpmn:outgoing>Flow_15iq6ok</bpmn:outgoing>
+      <bpmn:outgoing>Flow_132xyd1</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:sendTask id="Activity_04y3n3k">
+    <bpmn:sequenceFlow id="Flow_1hby1yf" sourceRef="Activity_0hnbpbb" targetRef="Event_0dqniol" />
+    <bpmn:sequenceFlow id="Flow_132xyd1" sourceRef="Activity_19cgnzn" targetRef="Event_02ny2jw" />
+    <bpmn:intermediateThrowEvent id="Event_02ny2jw">
       <bpmn:extensionElements>
-        <zeebe:taskDefinition type="send-message" retries="3" />
         <zeebe:ioMapping>
           <zeebe:input source="=&#34;start_provision&#34;" target="message_type" />
         </zeebe:ioMapping>
+        <zeebe:taskDefinition type="send-message" retries="3" />
       </bpmn:extensionElements>
-      <bpmn:incoming>Flow_15iq6ok</bpmn:incoming>
-    </bpmn:sendTask>
+      <bpmn:incoming>Flow_132xyd1</bpmn:incoming>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0fb0is6" />
+    </bpmn:intermediateThrowEvent>
+    <bpmn:intermediateThrowEvent id="Event_0dqniol">
+      <bpmn:extensionElements>
+        <zeebe:ioMapping>
+          <zeebe:input source="=&#34;dec_power&#34;" target="message_type" />
+        </zeebe:ioMapping>
+        <zeebe:taskDefinition type="send-message" retries="3" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1hby1yf</bpmn:incoming>
+      <bpmn:outgoing>Flow_0o2mamt</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_02ub3lu" />
+    </bpmn:intermediateThrowEvent>
+    <bpmn:endEvent id="Event_1xotosw">
+      <bpmn:incoming>Flow_0o2mamt</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0o2mamt" sourceRef="Event_0dqniol" targetRef="Event_1xotosw" />
+    <bpmn:startEvent id="Event_03kjqwb">
+      <bpmn:outgoing>Flow_0nucqxs</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0yx2bcx" messageRef="Message_05q8km5" />
+    </bpmn:startEvent>
   </bpmn:process>
-  <bpmn:process id="Process_1g12ttp" isExecutable="false">
+  <bpmn:process id="Process_1g12ttp" isExecutable="true">
     <bpmn:startEvent id="Event_0ayluqx">
       <bpmn:outgoing>Flow_1ftavfy</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_1bnkiv2" messageRef="Message_18rdmf6" />
@@ -272,7 +278,7 @@
       <bpmn:incoming>Flow_10crqcg</bpmn:incoming>
     </bpmn:sendTask>
   </bpmn:process>
-  <bpmn:process id="Process_1unyrt3" isExecutable="false">
+  <bpmn:process id="Process_1unyrt3" isExecutable="true">
     <bpmn:startEvent id="Event_17fx2y6">
       <bpmn:outgoing>Flow_1hochrs</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_0s3zaah" messageRef="Message_0h30j05" />
@@ -282,7 +288,7 @@
         <zeebe:taskDefinition type="ProvisioningNetworkCabling_HT" retries="3" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0mrgese</bpmn:incoming>
-      <bpmn:outgoing>Flow_03k84la</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1o3vnt3</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="Flow_1hochrs" sourceRef="Event_17fx2y6" targetRef="Activity_1owvphg" />
     <bpmn:serviceTask id="Activity_1owvphg" name="Отключение сетевых кабелей">
@@ -296,28 +302,29 @@
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="send-message" retries="3" />
         <zeebe:ioMapping>
-          <zeebe:input source="=&#34;start_notify_admin&#34;" target="message_type" />
+          <zeebe:input source="=&#34;start_admin&#34;" target="message_type" />
         </zeebe:ioMapping>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1t5lg55</bpmn:incoming>
       <bpmn:messageEventDefinition id="MessageEventDefinition_0uelcde" />
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_1t5lg55" sourceRef="Activity_1owvphg" targetRef="Event_0hb43sh" />
-    <bpmn:sequenceFlow id="Flow_03k84la" sourceRef="Activity_16qfbqz" targetRef="Activity_11466yl" />
-    <bpmn:sendTask id="Activity_11466yl">
+    <bpmn:startEvent id="Event_1qqs00o">
+      <bpmn:outgoing>Flow_0mrgese</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0483ng3" messageRef="Message_2p2ff6e" />
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0mrgese" sourceRef="Event_1qqs00o" targetRef="Activity_16qfbqz" />
+    <bpmn:sequenceFlow id="Flow_1o3vnt3" sourceRef="Activity_16qfbqz" targetRef="Event_0tlc4fc" />
+    <bpmn:intermediateThrowEvent id="Event_0tlc4fc">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="send-message" retries="3" />
         <zeebe:ioMapping>
           <zeebe:input source="=&#34;start_move_device&#34;" target="message_type" />
         </zeebe:ioMapping>
       </bpmn:extensionElements>
-      <bpmn:incoming>Flow_03k84la</bpmn:incoming>
-    </bpmn:sendTask>
-    <bpmn:startEvent id="Event_1qqs00o">
-      <bpmn:outgoing>Flow_0mrgese</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_0483ng3" messageRef="Message_2p2ff6e" />
-    </bpmn:startEvent>
-    <bpmn:sequenceFlow id="Flow_0mrgese" sourceRef="Event_1qqs00o" targetRef="Activity_16qfbqz" />
+      <bpmn:incoming>Flow_1o3vnt3</bpmn:incoming>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0sj2sr9" />
+    </bpmn:intermediateThrowEvent>
   </bpmn:process>
   <bpmn:process id="Process_0orkh7i" isExecutable="true">
     <bpmn:startEvent id="Event_08459oz">
@@ -337,7 +344,7 @@
     <bpmn:sequenceFlow id="Flow_0gd5r9n" sourceRef="Event_08459oz" targetRef="Activity_01g73km" />
     <bpmn:sequenceFlow id="Flow_0dw4g2t" sourceRef="Activity_01g73km" targetRef="Event_0kvn5l9" />
   </bpmn:process>
-  <bpmn:message id="Message_2lso94t" name="start_dec_power" />
+  <bpmn:message id="Message_2lso94t" name="dec_power" />
   <bpmn:message id="Message_38bbhdi" name="start_prepare_place" />
   <bpmn:message id="Message_2ci0u0j" name="start_provision" />
   <bpmn:message id="Message_18rdmf6" name="start_provision" />
@@ -347,7 +354,7 @@
   <bpmn:message id="Message_05q8km5" name="start_move_device" />
   <bpmn:message id="Message_2bdt4e8" name="start_decommission_storage" />
   <bpmn:message id="Message_0h30j05" name="start_decommission_network_cabler" />
-  <bpmn:message id="Message_0gbgsc9" name="start_notify_admin" />
+  <bpmn:message id="Message_0gbgsc9" name="start_admin" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1nqn78z">
       <bpmndi:BPMNShape id="Participant_1hrql73_di" bpmnElement="Participant_1hrql73" isHorizontal="true">
@@ -446,17 +453,11 @@
         <di:waypoint x="554" y="560" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Participant_1cqr2tl_di" bpmnElement="Participant_1cqr2tl" isHorizontal="true">
-        <dc:Bounds x="160" y="710" width="1369" height="340" />
+        <dc:Bounds x="160" y="710" width="1458" height="340" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0pyds30_di" bpmnElement="Activity_0hnbpbb">
         <dc:Bounds x="1100" y="880" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_17pjjnf" bpmnElement="Event_03kjqwb">
-        <dc:Bounds x="882" y="902" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="-24" y="1648" width="67" height="40" />
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_1vxo8qs" bpmnElement="Event_0c3s80g">
         <dc:Bounds x="252" y="902" width="36" height="36" />
@@ -464,17 +465,26 @@
           <dc:Bounds x="-24" y="1648" width="67" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0bp34nh" bpmnElement="Event_0dqniol">
-        <dc:Bounds x="1442" y="902" width="36" height="36" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0r0nsie_di" bpmnElement="Activity_19cgnzn">
         <dc:Bounds x="420" y="880" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_1krtmn2" bpmnElement="Activity_04y3n3k">
-        <dc:Bounds x="580" y="880" width="100" height="80" />
+      <bpmndi:BPMNShape id="Event_0d03rmz_di" bpmnElement="Event_02ny2jw">
+        <dc:Bounds x="652" y="902" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_15ynt7e_di" bpmnElement="Event_0dqniol">
+        <dc:Bounds x="1322" y="902" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1xotosw_di" bpmnElement="Event_1xotosw">
+        <dc:Bounds x="1482" y="902" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_17pjjnf" bpmnElement="Event_03kjqwb">
+        <dc:Bounds x="832" y="902" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="-24" y="1648" width="67" height="40" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_0dd4pyi" bpmnElement="Flow_0nucqxs">
-        <di:waypoint x="918" y="920" />
+        <di:waypoint x="868" y="920" />
         <di:waypoint x="1100" y="920" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0n3yops_di" bpmnElement="Flow_0n3yops">
@@ -483,11 +493,15 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1hby1yf_di" bpmnElement="Flow_1hby1yf">
         <di:waypoint x="1200" y="920" />
-        <di:waypoint x="1442" y="920" />
+        <di:waypoint x="1322" y="920" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_15iq6ok_di" bpmnElement="Flow_15iq6ok">
+      <bpmndi:BPMNEdge id="Flow_132xyd1_di" bpmnElement="Flow_132xyd1">
         <di:waypoint x="520" y="920" />
-        <di:waypoint x="580" y="920" />
+        <di:waypoint x="652" y="920" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0o2mamt_di" bpmnElement="Flow_0o2mamt">
+        <di:waypoint x="1358" y="920" />
+        <di:waypoint x="1482" y="920" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Participant_1w9fysh_di" bpmnElement="Participant_1w9fysh" isHorizontal="true">
         <dc:Bounds x="160" y="1050" width="1369" height="250" />
@@ -623,8 +637,8 @@
       <bpmndi:BPMNShape id="BPMNShape_1tnxz2e" bpmnElement="Event_0hb43sh">
         <dc:Bounds x="1432" y="1912" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_1bet6q7" bpmnElement="Activity_11466yl">
-        <dc:Bounds x="850" y="1890" width="100" height="80" />
+      <bpmndi:BPMNShape id="Event_1txzsoq_di" bpmnElement="Event_0tlc4fc">
+        <dc:Bounds x="832" y="1912" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_0mrgese_di" bpmnElement="Flow_0mrgese">
         <di:waypoint x="288" y="1930" />
@@ -638,9 +652,9 @@
         <di:waypoint x="1200" y="1930" />
         <di:waypoint x="1432" y="1930" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_03k84la_di" bpmnElement="Flow_03k84la">
+      <bpmndi:BPMNEdge id="Flow_1o3vnt3_di" bpmnElement="Flow_1o3vnt3">
         <di:waypoint x="550" y="1930" />
-        <di:waypoint x="850" y="1930" />
+        <di:waypoint x="832" y="1930" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Participant_0wzu5hn_di" bpmnElement="Participant_0wzu5hn" isHorizontal="true">
         <dc:Bounds x="160" y="2050" width="1369" height="250" />
@@ -665,12 +679,6 @@
       <bpmndi:BPMNEdge id="BPMNEdge_0tjvwpi" bpmnElement="Flow_0dw4g2t">
         <di:waypoint x="1270" y="2170" />
         <di:waypoint x="1442" y="2170" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_19kxa7b_di" bpmnElement="Flow_19kxa7b">
-        <di:waypoint x="630" y="960" />
-        <di:waypoint x="630" y="1100" />
-        <di:waypoint x="260" y="1100" />
-        <di:waypoint x="260" y="1162" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1skjuvh_di" bpmnElement="Flow_1skjuvh">
         <di:waypoint x="630" y="1220" />
@@ -718,10 +726,6 @@
         <di:waypoint x="270" y="1590" />
         <di:waypoint x="270" y="1652" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1jpyc0z_di" bpmnElement="Flow_1jpyc0z">
-        <di:waypoint x="900" y="1890" />
-        <di:waypoint x="900" y="938" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_18wq1kw_di" bpmnElement="Flow_18wq1kw">
         <di:waypoint x="690" y="1688" />
         <di:waypoint x="690" y="1850" />
@@ -729,10 +733,20 @@
         <di:waypoint x="270" y="1912" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0xabqqm_di" bpmnElement="Flow_0xabqqm">
-        <di:waypoint x="1460" y="938" />
-        <di:waypoint x="1460" y="1090" />
+        <di:waypoint x="1340" y="938" />
+        <di:waypoint x="1340" y="1090" />
         <di:waypoint x="980" y="1090" />
         <di:waypoint x="980" y="1162" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0w9jd11_di" bpmnElement="Flow_0w9jd11">
+        <di:waypoint x="670" y="938" />
+        <di:waypoint x="670" y="1100" />
+        <di:waypoint x="260" y="1100" />
+        <di:waypoint x="260" y="1162" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0u484h4_di" bpmnElement="Flow_0u484h4">
+        <di:waypoint x="850" y="1912" />
+        <di:waypoint x="850" y="938" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
