@@ -20,6 +20,7 @@ async def main():
     @worker.task(task_type="NotifyAdministrator_HT")
     async def notify_administrator_handler():
         print("Received a job: Notify Administrator")
+        print("Task 'Notify Administrator' completed successfully")
         return {"message": "Task 'Notify Administrator' completed successfully"}
 
     # Start the worker
