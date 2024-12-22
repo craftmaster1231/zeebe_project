@@ -18,7 +18,7 @@ async def main():
 
     # Define a job handler
 
-    @worker.task(task_type="ProvisioningCabling_HT")
+    @worker.task(task_type="ProvisioningNetworkCabling_HT")
     async def provision_cabling_handler():
         print("Received a job: Provision Network Cabling For Equipment Install")
         return {"message": "Task 'Provision Network Cabling For Equipment Install' completed successfully"}
