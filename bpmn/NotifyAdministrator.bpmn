@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_024m8ay" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.26.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.5.0">
+  <bpmn:collaboration id="Collaboration_0nwsvsz">
+    <bpmn:participant id="Participant_16rf2vg" name="Administrator" processRef="Process_1jrljc0" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_1jrljc0" isExecutable="true">
+    <bpmn:startEvent id="Event_1ruj60u">
+      <bpmn:outgoing>Flow_1kw8reo</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_12y4kgr" messageRef="Message_2lnu25s" />
+    </bpmn:startEvent>
+    <bpmn:endEvent id="Event_0nfjnha">
+      <bpmn:incoming>Flow_059357t</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:serviceTask id="Activity_1a4yfch" name="Send Notifiaction to Administrator">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="NotifyAdministrator_HT" retries="3" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1kw8reo</bpmn:incoming>
+      <bpmn:outgoing>Flow_059357t</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1kw8reo" sourceRef="Event_1ruj60u" targetRef="Activity_1a4yfch" />
+    <bpmn:sequenceFlow id="Flow_059357t" sourceRef="Activity_1a4yfch" targetRef="Event_0nfjnha" />
+  </bpmn:process>
+  <bpmn:message id="Message_2lnu25s" name="start_notify" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_0nwsvsz">
+      <bpmndi:BPMNShape id="Participant_16rf2vg_di" bpmnElement="Participant_16rf2vg" isHorizontal="true">
+        <dc:Bounds x="129" y="79" width="340" height="250" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0t05uoe_di" bpmnElement="Event_1ruj60u">
+        <dc:Bounds x="181" y="191" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0nfjnha_di" bpmnElement="Event_0nfjnha">
+        <dc:Bounds x="401" y="191" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_18j9kmh" bpmnElement="Activity_1a4yfch">
+        <dc:Bounds x="259" y="169" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1kw8reo_di" bpmnElement="Flow_1kw8reo">
+        <di:waypoint x="217" y="209" />
+        <di:waypoint x="259" y="209" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_059357t_di" bpmnElement="Flow_059357t">
+        <di:waypoint x="359" y="209" />
+        <di:waypoint x="401" y="209" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
