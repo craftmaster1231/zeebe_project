@@ -19,13 +19,13 @@ async def main():
     # Define a job handler
     @worker.task(task_type="DecommissionInitiator_HT")
     async def notify_administrator_handler():
-        print("Received a job: Initiate Device Decomission")
-        return {"message": "Task 'Initiate Device Decomission' completed successfully"}
+        print("Received a job: Initiate Device Decommission")
+        return {"message": "Task 'Initiate Device Decommission' completed successfully"}
 
     @worker.task(task_type="ScheduleDecommission_HT")
     async def notify_administrator_handler():
-        print("Received a job: Schedule Device Decomission")
-        return {"message": "Task 'Schedule Device Decomission' completed successfully"}
+        print("Received a job: Schedule Device Decommission")
+        return {"message": "Task 'Schedule Device Decommission' completed successfully"}
 
     @worker.task(task_type="PhysicalDecommission_HT")
     async def notify_administrator_handler():
@@ -33,7 +33,7 @@ async def main():
         return {"message": "Task 'Physical Decommission of Device' completed successfully"}
 
     # Start the worker
-    print("Starting Decomission Requestor worker...")
+    print("Starting Decommission Requestor worker...")
     await worker.work()
 
 if __name__ == "__main__":

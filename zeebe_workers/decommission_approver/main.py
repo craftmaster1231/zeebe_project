@@ -17,13 +17,13 @@ async def main():
     worker = ZeebeWorker(grpc_channel)
 
     # Define a job handler
-    @worker.task(task_type="DecommissionApprover_HT")
+    @worker.task(task_type="DecommissionApprover_HT") 
     async def notify_administrator_handler():
-        print("Received a job: Approve Equipment Decomission Request")
-        return {"message": "Task 'Approve Equipment Decomission Request' completed successfully"}
+        print("Received a job: Approve Equipment Decommission Request")
+        return {"message": "Task 'Approve Equipment Decommission Request' completed successfully"}
 
     # Start the worker
-    print("Starting Decomission Approver worker...")
+    print("Starting Decommission Approver worker...")
     await worker.work()
 
 if __name__ == "__main__":
