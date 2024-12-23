@@ -30,7 +30,7 @@ class MyServiceServicer(my_service_pb2_grpc.MyServiceServicer):
         try:
             conn = psycopg2.connect(database="postgres",
                                     user="postgres",
-                                    password="",
+                                    password="postgres",
                                     host="localhost",
                                     port=5432)
             cursor = conn.cursor()
@@ -49,7 +49,7 @@ class MyServiceServicer(my_service_pb2_grpc.MyServiceServicer):
             conn.close()
 
             response_data = {
-                        "message": f"new name",
+                        "message": f"",
                         "status": "success",
                     }
         except Exception as e:
@@ -64,9 +64,9 @@ class MyServiceServicer(my_service_pb2_grpc.MyServiceServicer):
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     my_service_pb2_grpc.add_MyServiceServicer_to_server(MyServiceServicer(), server)
-    server.add_insecure_port('[::]:50051')
+    server.add_insecure_port('[::]:30002')
     server.start()
-    print("Server is running on port 50051...")
+    print("Server is running on port 30002...")
     server.wait_for_termination()
 
 
