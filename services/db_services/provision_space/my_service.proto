@@ -1,12 +1,12 @@
 syntax = "proto3";
 
-service Rename {
-  rpc ProvisionSpaceResponse (JsonRequest) returns (JsonResponse);
+service MyService {
+  rpc GetJsonResponse (JsonRequest) returns (JsonResponse);
 }
 
 message JsonRequest {
   string SpaceName = 1;
-  int32 ParentId = 2;
+  string ParentId = 2;
   string Type = 3;
   float XCoordinate = 4;
   float YCoordinate = 5;

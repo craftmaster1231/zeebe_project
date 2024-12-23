@@ -21,8 +21,11 @@ from psycopg2 import sql
 
 class MyServiceServicer(my_service_pb2_grpc.MyServiceServicer):
     def GetJsonResponse(self, request, context):
-        id = request.id
-        new_name = request.new_name
+        ConnectionFromDevice = request.ConnectionFromDevice
+        ConnectionFromPort = request.ConnectionFromPort
+        ConnectionToDevice = request.ConnectionToDevice
+        ConnectionToPort = request.ConnectionToPort
+        ConnectionType = request.ConnectionType
 
         try:
             conn = psycopg2.connect(database="postgres",
@@ -33,7 +36,7 @@ class MyServiceServicer(my_service_pb2_grpc.MyServiceServicer):
             cursor = conn.cursor()
             
             
-            update_query = sql.SQL(f"UPDATE core SET DeviceName = '{new_name}'  WHERE Id = '{id}';")
+            update_query = sql.SQL(f"INSERT INTO Device_Connections (ConnectionFromDevice, ConnectedFromPort, ConnectedToDevice, ConnectedToPort, ConnectionType) VALUES ('{ConnectionFromDevice}', '{ConnectionFromPort}', '{ConnectionToDevice}', '{ConnectionToPort}', '{ConnectionType}');")
             cursor.execute(update_query)
             conn.commit()
 
@@ -46,7 +49,7 @@ class MyServiceServicer(my_service_pb2_grpc.MyServiceServicer):
             conn.close()
 
             response_data = {
-                        "message": f"new name - {new_name}",
+                        "message": f"new name",
                         "status": "success",
                     }
         except Exception as e:
