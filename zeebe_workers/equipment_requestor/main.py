@@ -1,6 +1,8 @@
 import asyncio
 import grpc
 from pyzeebe import ZeebeWorker
+import time
+import os
 
 # Zeebe Gateway details
 ZEEBE_GATEWAY = "localhost:26500"
@@ -31,6 +33,10 @@ async def main():
     async def initiate_equipment_install_handler():
         print("Received a job: Server Rename Initiator")
         print("Task 'Server Rename Initiator' completed successfully")
+
+        value = os.getenv("TEST_VAR")
+        time.sleep(int(value))
+
         return {"message": "Task 'Server Rename Initiator' completed successfully"}
 
     @worker.task(task_type="ApproveEquipmentMoveRequest_HT")
