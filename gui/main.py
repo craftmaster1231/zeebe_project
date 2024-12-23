@@ -2,21 +2,24 @@ import sys
 import time
 from PyQt5.QtWidgets import (
     QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton, QLabel,
-    QDialog, QTableWidget, QTableWidgetItem
+    QDialog, QTableWidget, QTableWidgetItem, QCheckBox
 )
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QTimer
+
 
 # Функция для получения данных о бизнес-процессах через gRPC
 def getAvailableBP():
     return {
         "available_id": [1, 2, 3],
         "bp_name": ["БП 1", "БП 2", "БП 3"],
+        "approval_skippable": [True, False, True],  # Новый параметр
         "tasks": {
             1: ["Заказ пиццы", "Заказ супа", "Заказ пюрешки"],
             2: ["Осмотр автомобиля", "Осмотр пациента", "Осмотр окрестностей"],
             3: ["Диалог с участковым", "Диалог с медбратом", "Диалог с бабушкой-соседкой"]
         }
     }
+
 
 # Функция для получения данных о воркерах через gRPC
 def getAllWorkers():
@@ -26,7 +29,24 @@ def getAllWorkers():
         "count_tasks": [0, 0, 0]
     }
 
-# Диалог для отображения задач выбранного БП
+
+# Функция для запуска БП через gRPC
+def run_bp(bp_id, skip_approval=False):
+    approval_status = "пропущено" if skip_approval else "требуется"
+    return {
+        "Status": f"Бизнес-процесс с ID {bp_id} запущен. Одобрение: {approval_status}."
+    }
+
+
+# Функция для получения данных о запущенных БП через gRPC
+def getRunningBP():
+    # Заглушка: здесь выполняется реальный запрос к серверу для получения данных
+    return [
+        {"bp_id": 1, "bp_name": "БП 1", "instance_id": 1, "start_time": "2024-12-20 14:00:00"},
+        {"bp_id": 2, "bp_name": "БП 2", "instance_id": 2, "start_time": "2024-12-20 14:05:00"},
+    ]
+
+
 class BPTasksDialog(QDialog):
     def __init__(self, bp_name, tasks, parent=None):
         super().__init__(parent)
@@ -58,7 +78,6 @@ class BPListDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Список БП")
-        self.setStyleSheet("background-color: #e8eaf6;")
         self.resize(600, 300)
 
         self.bp_data = getAvailableBP()
@@ -78,6 +97,10 @@ class BPListDialog(QDialog):
         self.table.cellClicked.connect(self.select_bp)
         layout.addWidget(self.table)
 
+        self.skip_approval_checkbox = QCheckBox("Skip Approval")
+        self.skip_approval_checkbox.setEnabled(False)  # По умолчанию чекбокс отключен
+        layout.addWidget(self.skip_approval_checkbox)
+
         self.bp_tasks_button = QPushButton("Задачи БП")
         self.bp_tasks_button.setEnabled(False)
         self.bp_tasks_button.clicked.connect(self.show_bp_tasks)
@@ -95,6 +118,28 @@ class BPListDialog(QDialog):
         self.bp_tasks_button.setEnabled(True)
         self.start_bp_button.setEnabled(True)
 
+        # Установка состояния чекбокса
+        approval_skippable = self.bp_data["approval_skippable"][self.selected_bp_id - 1]
+        self.skip_approval_checkbox.setEnabled(approval_skippable)
+        self.skip_approval_checkbox.setChecked(False)  # Сбрасываем состояние чекбокса
+
+    def start_bp(self):
+        if self.selected_bp_id is not None:
+            skip_approval = self.skip_approval_checkbox.isChecked()
+            print(f"Запуск БП с ID {self.selected_bp_id}, Skip Approval: {skip_approval}")
+            response = run_bp(self.selected_bp_id)
+            print(response["Status"])  # Отображаем статус в консоли
+
+            bp_name = self.bp_data["bp_name"][self.selected_bp_id - 1]
+            tasks = self.bp_data["tasks"].get(self.selected_bp_id, [])
+
+            # Распределение задач воркерам
+            self.parent().add_tasks_to_worker(bp_name, tasks)
+
+            # Обновление запущенных БП
+            running_bps = getRunningBP()
+            self.parent().update_running_bps(running_bps)
+
     def show_bp_tasks(self):
         if self.selected_bp_id is not None:
             bp_name = self.bp_data["bp_name"][self.selected_bp_id - 1]
@@ -102,12 +147,6 @@ class BPListDialog(QDialog):
             dialog = BPTasksDialog(bp_name, tasks, self)
             dialog.exec_()
 
-    def start_bp(self):
-        if self.selected_bp_id is not None:
-            bp_name = self.bp_data["bp_name"][self.selected_bp_id - 1]
-            tasks = self.bp_data["tasks"].get(self.selected_bp_id, [])
-            self.parent().add_tasks_to_worker(bp_name, tasks)
-            self.parent().add_running_bp(self.selected_bp_id, bp_name)
 
 # Окно для отображения задач воркера
 class WorkerTasksDialog(QDialog):
@@ -134,6 +173,7 @@ class WorkerTasksDialog(QDialog):
             for col, value in enumerate(task):
                 self.table.setItem(row, col, QTableWidgetItem(str(value)))
 
+
 # Окно для отображения списка воркеров
 class WorkerListDialog(QDialog):
     def __init__(self, worker_data, parent=None):
@@ -155,6 +195,31 @@ class WorkerListDialog(QDialog):
         layout.addWidget(self.table)
         self.setLayout(layout)
 
+        # В конструктор WorkerListDialog
+        self.selected_worker_id = None
+
+        self.worker_tasks_button = QPushButton("Задачи воркера")
+        self.worker_tasks_button.setEnabled(False)
+        self.worker_tasks_button.clicked.connect(self.show_worker_tasks)
+        layout.addWidget(self.worker_tasks_button)
+
+        self.table.cellClicked.connect(self.select_worker)
+
+    def select_worker(self, row, column):
+        self.selected_worker_id = int(self.table.item(row, 0).text())
+        self.worker_tasks_button.setEnabled(True)
+
+    def show_worker_tasks(self):
+        if self.selected_worker_id is not None:
+            worker_id = self.selected_worker_id
+            worker_tasks = [
+                task for task in self.parent().tasks if task[3] == worker_id
+            ]
+
+            dialog = WorkerTasksDialog(self)
+            dialog.update_tasks(worker_tasks)
+            dialog.exec_()
+
     def refresh_table(self):
         for row, (worker_id, worker_name, count_tasks) in enumerate(zip(
             self.worker_data["worker_id"],
@@ -165,7 +230,7 @@ class WorkerListDialog(QDialog):
             self.table.setItem(row, 1, QTableWidgetItem(worker_name))
             self.table.setItem(row, 2, QTableWidgetItem(str(count_tasks)))
 
-# Окно для отображения списка запущенных БП
+
 class RunningBPDialog(QDialog):
     def __init__(self, running_bps, parent=None):
         super().__init__(parent)
@@ -236,7 +301,6 @@ class MainWindow(QMainWindow):
         buttons = [
             ("Список БП", self.open_bp_list),
             ("Список воркеров", self.open_worker_list),
-            ("Задачи воркера", self.open_worker_tasks),
             ("Список запущенных БП", self.open_running_bps),
         ]
 
@@ -251,6 +315,11 @@ class MainWindow(QMainWindow):
 
         self.worker_tasks_dialog = WorkerTasksDialog(self)
 
+        # Инициализация таймера
+        self.running_bp_timer = QTimer(self)
+        self.running_bp_timer.timeout.connect(self.refresh_running_bps)
+        self.running_bp_timer.start(2000)  # Запуск таймера с интервалом 2 секунды
+
     def open_bp_list(self):
         dialog = BPListDialog(self)
         dialog.exec_()
@@ -258,10 +327,6 @@ class MainWindow(QMainWindow):
     def open_worker_list(self):
         dialog = WorkerListDialog(self.worker_data, self)
         dialog.exec_()
-
-    def open_worker_tasks(self):
-        self.worker_tasks_dialog.update_tasks(self.tasks)
-        self.worker_tasks_dialog.exec_()
 
     def open_running_bps(self):
         dialog = RunningBPDialog(self.running_bps, self)
@@ -287,10 +352,21 @@ class MainWindow(QMainWindow):
         current_time = time.strftime("%Y-%m-%d %H:%M:%S")
         self.running_bps.append((bp_id, bp_name, instance_id, current_time))
 
+    def update_running_bps(self, running_bps):
+        self.running_bps = [
+            (bp["bp_id"], bp["bp_name"], bp["instance_id"], bp["start_time"])
+            for bp in running_bps
+        ]
+
+    def refresh_running_bps(self):
+        # Получить обновленный список запущенных БП
+        running_bps = getRunningBP()
+        self.update_running_bps(running_bps)
+        print("Список запущенных БП обновлен")
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = MainWindow()
     window.show()
     sys.exit(app.exec_())
-
