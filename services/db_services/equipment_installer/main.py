@@ -21,19 +21,12 @@ from psycopg2 import sql
 
 class MyServiceServicer(my_service_pb2_grpc.MyServiceServicer):
     def GetJsonResponse(self, request, context):
-        SpaceName = request.SpaceName
-        ParentId = request.ParentId
-        Type = request.Type
-        XCoordinate = request.XCoordinate
-        YCoordinate = request.YCoordinate
-        ZCoordinate = request.ZCoordinate
-        Rotation = request.Rotation
-        RackSide = request.RackSide
-        RU = request.RU
-        Location = request.Location
-        UHeight = request.UHeight
-        XOffset = request.XOffset
-        XPosition = request.XPosition
+        BuildingName = request.BuildingName
+        DesignPowerCapacity = request.DesignPowerCapacity
+        DeviceName = request.DeviceName
+        DeviceType = request.DeviceType
+        Manufacturer = request.Manufacturer
+        Model = request.Model
 
         try:
             conn = psycopg2.connect(database="postgres",
@@ -44,7 +37,7 @@ class MyServiceServicer(my_service_pb2_grpc.MyServiceServicer):
             cursor = conn.cursor()
             
             
-            update_query = sql.SQL(f"INSERT INTO Placement (SpaceName, ParentId, Type, XCoordinate, YCoordinate, ZCoordinate, Rotation, RackSide, RU, Location, UHeight, XOffset, XPosition) VALUES ('{SpaceName}', '{ParentId}', '{Type}', {XCoordinate}, {YCoordinate}, {ZCoordinate}, {Rotation}, '{RackSide}', {RU}, {Location}, {UHeight}, {XOffset}, {XPosition})")
+            update_query = sql.SQL(f"INSERT INTO Core (BuildingName, DesignPowerCapacity, DeviceName, DeviceType, Manufacturer, Model) VALUES ('{BuildingName}', {DesignPowerCapacity}, '{DeviceName}', '{DeviceType}', '{Manufacturer}', '{Model}')")
             cursor.execute(update_query)
             conn.commit()
 
@@ -72,9 +65,9 @@ class MyServiceServicer(my_service_pb2_grpc.MyServiceServicer):
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     my_service_pb2_grpc.add_MyServiceServicer_to_server(MyServiceServicer(), server)
-    server.add_insecure_port('[::]:30001')
+    server.add_insecure_port('[::]:30003')
     server.start()
-    print("Server is running on port 30001...")
+    print("Server is running on port 30003...")
     server.wait_for_termination()
 
 

@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+service MyService {
+  rpc GetJsonResponse (JsonRequest) returns (JsonResponse);
+}
+
+message JsonRequest {
+  string id = 1;
+}
+
+message JsonResponse {
+  string response = 1;
+}

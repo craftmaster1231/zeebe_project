@@ -21,19 +21,7 @@ from psycopg2 import sql
 
 class MyServiceServicer(my_service_pb2_grpc.MyServiceServicer):
     def GetJsonResponse(self, request, context):
-        SpaceName = request.SpaceName
-        ParentId = request.ParentId
-        Type = request.Type
-        XCoordinate = request.XCoordinate
-        YCoordinate = request.YCoordinate
-        ZCoordinate = request.ZCoordinate
-        Rotation = request.Rotation
-        RackSide = request.RackSide
-        RU = request.RU
-        Location = request.Location
-        UHeight = request.UHeight
-        XOffset = request.XOffset
-        XPosition = request.XPosition
+        delete_id = request.id
 
         try:
             conn = psycopg2.connect(database="postgres",
@@ -44,9 +32,11 @@ class MyServiceServicer(my_service_pb2_grpc.MyServiceServicer):
             cursor = conn.cursor()
             
             
-            update_query = sql.SQL(f"INSERT INTO Placement (SpaceName, ParentId, Type, XCoordinate, YCoordinate, ZCoordinate, Rotation, RackSide, RU, Location, UHeight, XOffset, XPosition) VALUES ('{SpaceName}', '{ParentId}', '{Type}', {XCoordinate}, {YCoordinate}, {ZCoordinate}, {Rotation}, '{RackSide}', {RU}, {Location}, {UHeight}, {XOffset}, {XPosition})")
+            update_query = sql.SQL(f"DELETE FROM Device_Connections where Device_Connections.ConnectionFromDevice = '{delete_id}';")
             cursor.execute(update_query)
             conn.commit()
+            
+            
 
             if cursor.rowcount > 0:
                 status = "success"
@@ -72,9 +62,9 @@ class MyServiceServicer(my_service_pb2_grpc.MyServiceServicer):
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     my_service_pb2_grpc.add_MyServiceServicer_to_server(MyServiceServicer(), server)
-    server.add_insecure_port('[::]:30001')
+    server.add_insecure_port('[::]:30005')
     server.start()
-    print("Server is running on port 30001...")
+    print("Server is running on port 30005...")
     server.wait_for_termination()
 
 
