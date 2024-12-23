@@ -1,6 +1,8 @@
 import asyncio
 import grpc
 from pyzeebe import ZeebeWorker
+import time
+import os
 
 # Zeebe Gateway details
 ZEEBE_GATEWAY = "localhost:26500"
@@ -21,6 +23,10 @@ async def main():
     async def notify_administrator_handler():
         print("Received a job: Notify Administrator")
         print("Task 'Notify Administrator' completed successfully")
+
+        value = os.getenv("TEST_VAR")
+        time.sleep(int(value))
+
         return {"message": "Task 'Notify Administrator' completed successfully"}
 
     # Start the worker
