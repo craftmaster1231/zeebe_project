@@ -9,36 +9,32 @@ protoc.main((
     '--proto_path=.',
     '--python_out=.',
     '--grpc_python_out=.',
-    'rename.proto',
+    'my_service.proto',
 ))
 
 # Import the dynamically generated modules
-import rename_pb2
-import rename_pb2_grpc
+import my_service_pb2
+import my_service_pb2_grpc
 import psycopg2
 from psycopg2 import sql
-from concurrent import futures
 
 
-db_params = {
-        'dbname': 'mydb',
-        'user': 'myuser',
-        'password': 'mypassword',
-        'host': 'localhost',
-        'port': 5432,
-    }
-
-class RenameServicer(rename_pb2_grpc.RenameServicer):
-    def RenameResponse(self, request, context):
+class MyServiceServicer(my_service_pb2_grpc.MyServiceServicer):
+    def GetJsonResponse(self, request, context):
         id = request.id
-        name = request.new_name
+        new_name = request.new_name
 
         try:
-            conn = psycopg2.connect(*db_params)
+            conn = psycopg2.connect(database="postgres",
+                                    user="postgres",
+                                    password="",
+                                    host="localhost",
+                                    port=5432)
             cursor = conn.cursor()
             
-            update_query = sql.SQL("UPDATE my_table SET name = %s WHERE id = %s")
-            cursor.execute(update_query, (name, id))
+            
+            update_query = sql.SQL(f"UPDATE core SET DeviceName = '{new_name}'  WHERE Id = '{id}';")
+            cursor.execute(update_query)
             conn.commit()
 
             if cursor.rowcount > 0:
@@ -50,7 +46,7 @@ class RenameServicer(rename_pb2_grpc.RenameServicer):
             conn.close()
 
             response_data = {
-                        "message": f"new name - {name}",
+                        "message": f"new name - {new_name}",
                         "status": "success",
                     }
         except Exception as e:
@@ -59,12 +55,12 @@ class RenameServicer(rename_pb2_grpc.RenameServicer):
                         "status": "error",
                     }
 
-        return rename_pb2.JsonResponse(response=json.dumps(response_data))
+        return my_service_pb2.JsonResponse(response=json.dumps(response_data))
 
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    rename_pb2_grpc.add_RenameServicer_to_server(RenameServicer(), server)
+    my_service_pb2_grpc.add_MyServiceServicer_to_server(MyServiceServicer(), server)
     server.add_insecure_port('[::]:50051')
     server.start()
     print("Server is running on port 50051...")
