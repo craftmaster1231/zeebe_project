@@ -1,3 +1,3 @@
 #!/bin/bash
 
-zbctl --insecure create instance Task3_BP
+zbctl --insecure create instance Task3_BP --variables "$@"
