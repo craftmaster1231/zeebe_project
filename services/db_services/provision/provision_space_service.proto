@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+service Rename {
+  rpc ProvisionSpaceResponse (JsonRequest) returns (JsonResponse);
+}
+
+message JsonRequest {
+  string SpaceName = 1;
+  int32 ParentId = 2;
+  string Type = 3;
+  float XCoordinate = 4;
+  float YCoordinate = 5;
+  float ZCoordinate = 6;
+  float Rotation = 7;
+  string RackSide = 8;
+  int32 RU = 9;
+  int32 Location = 10;
+  int32 UHeight = 11;
+  float XOffset = 12;
+  float XPosition = 13;
+}
+
+message JsonResponse {
+  string response = 1;
+}

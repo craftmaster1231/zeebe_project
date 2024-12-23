@@ -45,7 +45,7 @@
     <bpmn:sequenceFlow id="Flow_1akyb9t" name="да" sourceRef="Gateway_0f0zz7u" targetRef="Event_197g4vm">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=1&gt;0</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:serviceTask id="Activity_1vwy961" name="Утверждение установки">
+    <bpmn:serviceTask id="Activity_1vwy961" name="Утверждение имени">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="ChangeServerName_HT" retries="3" />
       </bpmn:extensionElements>
@@ -125,6 +125,7 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0anzmpg_di" bpmnElement="Activity_1vwy961">
         <dc:Bounds x="390" y="410" width="100" height="80" />
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_196vr2k" bpmnElement="Event_197g4vm">
         <dc:Bounds x="812" y="432" width="36" height="36" />
