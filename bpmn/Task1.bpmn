@@ -56,10 +56,10 @@
     <bpmn:sequenceFlow id="Flow_1lxzmbw" sourceRef="StartEvent_1" targetRef="Activity_1n2y9q1" />
     <bpmn:sequenceFlow id="Flow_0n15moe" sourceRef="Activity_1n2y9q1" targetRef="Gateway_1209rat" />
     <bpmn:sequenceFlow id="Flow_1mgspya" sourceRef="Gateway_1209rat" targetRef="Event_1y64hfm">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=1&gt;0</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=skip_approval=false</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1b4ui9k" sourceRef="Gateway_1209rat" targetRef="Event_01byekj">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=1&lt;0</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=skip_approval=true</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
   </bpmn:process>
   <bpmn:process id="Process_0q2mm63" isExecutable="true">
