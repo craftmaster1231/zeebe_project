@@ -9,10 +9,10 @@ pip install --upgrade pip
 pip install -r requirements.txt
 
 # Compile proto file
-python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. my_service.proto
+python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. provision_space_service.proto
 
 # Run the server
-python grpc_server_runtime.py
+python provision_space_service.py
 
 deactivate
 

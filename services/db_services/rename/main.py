@@ -15,6 +15,9 @@ protoc.main((
 # Import the dynamically generated modules
 import rename_pb2
 import rename_pb2_grpc
+import psycopg2
+from psycopg2 import sql
+from concurrent import futures
 
 
 db_params = {
@@ -25,7 +28,7 @@ db_params = {
         'port': 5432,
     }
 
-class RenameServicer(my_service_pb2_grpc.RenameServicer):
+class RenameServicer(rename_pb2_grpc.RenameServicer):
     def RenameResponse(self, request, context):
         id = request.id
         name = request.new_name
@@ -61,7 +64,7 @@ class RenameServicer(my_service_pb2_grpc.RenameServicer):
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    rename_pb2_grpc.add_MyServiceServicer_to_server(RenameServicer(), server)
+    rename_pb2_grpc.add_RenameServicer_to_server(RenameServicer(), server)
     server.add_insecure_port('[::]:50051')
     server.start()
     print("Server is running on port 50051...")
