@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+service MyService {
+  rpc GetJsonResponse (JsonRequest) returns (JsonResponse);
+}
+
+message JsonRequest {
+  string BuildingName = 1;
+  float DesignPowerCapacity = 2;
+  string DeviceName = 3;
+  string DeviceType = 4;
+  string Manufacturer = 5;
+  string Model = 6;
+
+}
+
+message JsonResponse {
+  string response = 1;
+}
