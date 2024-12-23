@@ -26,7 +26,7 @@ trap 'echo "Stopping all workers..."; for pid in "${PIDS[@]}"; do kill $pid 2>/d
 
 # Start workers and output logs in real-time
 echo "Starting all workers..."
-for dir in $(find . -type d -not -path "./venv*" -not -path "."); do
+for dir in $(find ../zeebe_workers/ -type d -not -path "./venv*" -not -path "."); do
   if [ -f "$dir/main.py" ]; then
     echo "Starting Zeebe worker in $dir..."
     cd "$dir"
