@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Base directory containing all worker directories
-BASE_DIR=$(pwd)/../services/db_services/
+BASE_DIR=$(dirname "$0")/../services/db_services/
 PIDS=()  # Array to store worker process IDs
 
 # Setup a common Python virtual environment
@@ -22,21 +22,28 @@ else
 fi
 
 # Trap SIGINT (Ctrl+C) to kill all worker processes
-trap 'echo "Stopping all services..."; for pid in "${PIDS[@]}"; do kill $pid 2>/dev/null; done; exit' SIGINT
+trap 'echo "Stopping all services..."; for pid in "${PIDS[@]}"; do kill $pid 2>/dev/null; done; wait; exit' SIGINT
 
 # Start workers and output logs in real-time
 echo "Starting all services..."
-for dir in $(find ../services/db_services -type d -not -path "./venv*" -not -path "."); do
+for dir in $(find "$BASE_DIR" -mindepth 1 -maxdepth 1 -type d -not -path "$COMMON_VENV*" -not -path "$BASE_DIR" -not -path "."); do
   if [ -f "$dir/run_server.sh" ]; then
     echo "Starting Service in $dir..."
-    cd "$dir"
-    # Compile proto file
-    python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. my_service.proto &
+    cd "$dir" || continue
+    
+    # Compile proto files safely
+    if [ -f "my_service.proto" ]; then
+      python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. my_service.proto
+    fi
 
     # Run the server
-    python main.py &
-    PIDS+=($!)  # Store the PID of the worker process
-    cd "$BASE_DIR"
+    if python main.py & then
+      PIDS+=($!)  # Store the PID of the worker process
+      echo "Service in $dir started successfully."
+    else
+      echo "Failed to start service in $dir."
+    fi
+    cd - > /dev/null  # Return to the previous directory without error if already there
   fi
 done
 
