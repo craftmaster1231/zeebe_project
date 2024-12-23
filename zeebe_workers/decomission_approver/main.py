@@ -17,19 +17,13 @@ async def main():
     worker = ZeebeWorker(grpc_channel)
 
     # Define a job handler
-
-    @worker.task(task_type="ProvisioningNetworkCabling_HT")
-    async def provision_cabling_handler():
-        print("Received a job: Provision Network Cabling For Equipment Install")
-        return {"message": "Task 'Provision Network Cabling For Equipment Install' completed successfully"}
-
-    @worker.task(task_type="DecommissionNetworkCabling_HT")
-    async def provision_cabling_handler():
-        print("Received a job: Decommission Network Cabling For Equipment Move")
-        return {"message": "Task 'Decommission Network Cabling For Equipment Move' completed successfully"}
+    @worker.task(task_type="DecommissionApprover_HT")
+    async def notify_administrator_handler():
+        print("Received a job: Approve Equipment Decomission Request")
+        return {"message": "Task 'Approve Equipment Decomission Request' completed successfully"}
 
     # Start the worker
-    print("Starting Network Cabler worker...")
+    print("Starting Decomission Approver worker...")
     await worker.work()
 
 if __name__ == "__main__":

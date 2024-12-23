@@ -41,7 +41,7 @@ async def main():
 
 
     # Start the worker
-    print("Worker started and waiting for messages...")
+    print("Starting MEssage Sender worker...")
     await worker.work()
 
 
