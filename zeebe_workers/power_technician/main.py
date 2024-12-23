@@ -25,7 +25,7 @@ async def main():
     @worker.task(task_type="DecommissionPower_HT")
     async def provision_power_handler():
         print("Received a job: Decommission Power For Equipment Move")
-        return {"message": "Task 'Decommission Power For Equipment Move' completed successfully"}
+        return {"message": "Task 'Decommission Power ' completed successfully"}
 
 
     # Start the worker

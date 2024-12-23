@@ -1,7 +1,0 @@
-Error: rpc error: code = InvalidArgument desc = Command 'CREATE' rejected with code 'INVALID_ARGUMENT': Expected to deploy new resources, but encountered the following errors:
-'../bpmn/Task3.bpmn': - Element: Flow_0vhtp6c
-    - ERROR: Must have a condition or be default flow
-- Element: Flow_1njml1h
-    - ERROR: Must have a condition or be default flow
-
-Failed to deploy ../bpmn/Task3.bpmn. Check error log: error_log.txt

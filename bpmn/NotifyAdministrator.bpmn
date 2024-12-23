@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_024m8ay" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.26.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.5.0">
   <bpmn:collaboration id="Collaboration_0nwsvsz">
-    <bpmn:participant id="Participant_16rf2vg" name="Administrator" processRef="Process_1jrljc0" />
+    <bpmn:participant id="Participant_16rf2vg" name="Administrator" processRef="NotifyAdministrator_BP" />
   </bpmn:collaboration>
-  <bpmn:process id="Process_1jrljc0" isExecutable="true">
+  <bpmn:process id="NotifyAdministrator_BP" isExecutable="true">
     <bpmn:startEvent id="Event_1ruj60u">
       <bpmn:outgoing>Flow_1kw8reo</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_12y4kgr" messageRef="Message_2lnu25s" />
